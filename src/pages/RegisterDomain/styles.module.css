@@ -1,0 +1,32 @@
+.paper {
+    padding: 32px;
+}
+
+.field {
+    font-size: 14px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.label {
+    padding-right: 8px;
+}
+
+.value {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    font-weight: bold;
+}
+
+.domainInput {
+    width: 100%;
+
+    input {
+        text-align: right;
+    }
+}
