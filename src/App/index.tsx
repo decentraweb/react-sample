@@ -9,6 +9,7 @@ import {providers} from "ethers";
 import getNetwork from "../utils/getNetwork";
 import {useWeb3ModalAccount, useWeb3ModalProvider} from "@web3modal/ethers5/react";
 import routes from "./routes";
+import {api} from "@decentraweb/core";
 
 
 const router = createBrowserRouter(routes);
@@ -18,14 +19,18 @@ const queryClient = new QueryClient()
 
 interface ConnectedAppProps {
   chainId: number;
+  signerAddress: string;
   walletProvider: providers.ExternalProvider;
 }
 
-function ConnectedApp({chainId, walletProvider}: ConnectedAppProps) {
+function ConnectedApp({chainId, signerAddress, walletProvider}: ConnectedAppProps) {
   const ctx = useMemo<AppContextType>(() => ({
     network: getNetwork(chainId),
-    provider: new providers.Web3Provider(walletProvider)
-  }), [chainId, walletProvider]);
+    isPolygon: chainId === 137 || chainId === 80001,
+    provider: new providers.Web3Provider(walletProvider),
+    signerAddress,
+    api: new api.DecentrawebAPI(getNetwork(chainId))
+  }), [chainId, signerAddress, walletProvider]);
   return (
     <AppContext.Provider value={ctx}>
       <RouterProvider router={router}/>
@@ -35,10 +40,16 @@ function ConnectedApp({chainId, walletProvider}: ConnectedAppProps) {
 
 function App() {
   const {walletProvider} = useWeb3ModalProvider();
-  const {chainId} = useWeb3ModalAccount();
+  const {chainId, address} = useWeb3ModalAccount();
   let content;
-  if (walletProvider && chainId) {
-    content = <ConnectedApp chainId={chainId} walletProvider={walletProvider}/>
+  if (walletProvider && chainId && address) {
+    content = (
+      <ConnectedApp
+        chainId={chainId}
+        signerAddress={address}
+        walletProvider={walletProvider}
+      />
+    );
   } else {
     content = <ConnectWallet/>;
   }

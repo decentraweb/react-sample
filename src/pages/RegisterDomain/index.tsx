@@ -1,15 +1,19 @@
 import {useParams} from "react-router-dom";
-import {Container, Typography} from "@mui/material";
+import {Alert, Container, Typography} from "@mui/material";
 
-import React, {useCallback, useState} from "react";
+import React, {useState} from "react";
 import {registrars} from "@decentraweb/core";
 import SubdomainForm from "./SubdomainForm";
 import RegistrationApproval from "./RegistrationApproval";
+import useDomainStakingState from "../../hooks/useDomainStakingState";
+import useDomainFees from "../../hooks/useDomainFees";
+import Loading from "../../common/Loading";
 
 
 interface State {
   duration: number;
   subdomain: string;
+  isFeeInDWEB: boolean;
   isAvailable: boolean;
   approval: registrars.ApprovedRegistration | null;
 }
@@ -20,40 +24,49 @@ function RegisterDomain(): JSX.Element {
   if (!domain) {
     throw new Error("No domain provided, this should never happen");
   }
-
+  const {data: stakingState, isPending} = useDomainStakingState(domain);
+  const {data: serviceFees, isPending: isFeesPending} = useDomainFees();
 
   const [state, setState] = useState<State>({
     duration: registrars.DURATION.ONE_YEAR,
     subdomain: '',
+    isFeeInDWEB: false,
     isAvailable: false,
     approval: null,
   });
 
+  if (isPending || !stakingState || isFeesPending || !serviceFees) {
+    return (
+      <Loading/>
+    )
+  }
 
-  const handleChange = useCallback((name: string, value: any) => {
-    setState((prevState) => {
-      return {
-        ...prevState,
-        [name]: value
-      }
-    });
-  }, [setState]);
+  if (!stakingState.staked) {
+    return (
+      <Container maxWidth="xs">
+        <Alert severity="error">Domain is not staked</Alert>
+      </Container>
+    )
+  }
 
   let content;
   if (state.subdomain) {
     content = (
       <RegistrationApproval
-        domain={domain}
+        domain={stakingState}
         subdomain={state.subdomain}
+        duration={state.duration}
+        isFeeInDWEB={state.isFeeInDWEB}
         onApproved={(approval) => setState({...state, approval})}
+        onReturn={() => setState({...state, subdomain: ''})}
       />
     );
   } else {
     content = (
       <SubdomainForm
-        domain={domain}
-        onChange={handleChange}
-        onSubmit={(subdomain, duration) => setState({...state, subdomain, duration})}
+        domain={stakingState}
+        serviceFees={serviceFees}
+        onSubmit={(subdomain, duration, isFeeInDWEB) => setState({...state, subdomain, duration, isFeeInDWEB})}
       />
     )
   }

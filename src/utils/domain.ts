@@ -1,4 +1,4 @@
-import {DWEBRegistry, utils} from "@decentraweb/core";
+import {DWEBRegistry, registrars, utils} from "@decentraweb/core";
 import {ethProvider, polygonProvider} from "./providers";
 import config from "../config";
 
@@ -27,4 +27,38 @@ export async function checkDomainExists(domain: string) {
     dwebPolygon.nameExists(domain),
   ]);
   return data[0] || data[1];
+}
+
+type ServiceFee = {amount: number, paidWith: 'ETH' | 'WETH'};
+type OwnerFee = {amount: number, paidWith: 'ETH' | 'WETH' | 'DWEB'};
+
+export function getSubdomainFees(
+  data: registrars.StakedDomain,
+  duration: number,
+  registrationFee: number,
+  renewalFee: number,
+  payInDweb: boolean,
+  isPolygon: boolean
+): {total: number, serviceFee: ServiceFee, ownerFee: OwnerFee} {
+  const serviceFee: ServiceFee = {
+    amount: registrationFee,
+    paidWith: isPolygon ? 'WETH' : 'ETH',
+  }
+  const ownerFee: OwnerFee = {
+    amount: data.price,
+    paidWith: payInDweb ? 'DWEB' : (isPolygon ? 'WETH' : 'ETH'),
+  }
+
+  if (data.renewalType === 'renewed') {
+    const renewalYears = (duration / registrars.DURATION.ONE_YEAR) - 1;
+    serviceFee.amount += renewalFee * renewalYears;
+    ownerFee.amount += data.renewalFee * renewalYears;
+  }
+
+
+  return {
+    total: ownerFee.amount + serviceFee.amount,
+    serviceFee,
+    ownerFee,
+  };
 }

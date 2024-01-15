@@ -2,7 +2,7 @@ import {registrars} from "@decentraweb/core";
 import {Tooltip} from "@mui/material";
 import InfoIcon from "@mui/icons-material/InfoOutlined";
 import React, {ReactNode} from "react";
-import styles from "./styles.module.css";
+import styles from "../styles.module.css";
 
 
 function Field({label, children}: { label: string, children: ReactNode }): JSX.Element {

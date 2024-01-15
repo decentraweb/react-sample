@@ -7,6 +7,7 @@ import {registrars} from "@decentraweb/core";
 import useDomainFees from "../../hooks/useDomainFees";
 import styles from "./styles.module.css";
 import {Link} from "react-router-dom";
+import Loading from "../../common/Loading";
 
 
 interface DomainCardProps {
@@ -69,7 +70,9 @@ function DomainCard({data, registrationFee, renewalFee}: DomainCardProps): JSX.E
 function DomainList(): JSX.Element {
   const {error, data} = useDomainStakingStateBatch(config.stakedDomains);
   const {data: fees} = useDomainFees();
-  if (!data || !fees) return (<div>Loading...</div>);
+  if (!data || !fees) {
+    return (<Loading />);
+  }
 
   return (
     <Container maxWidth="md">

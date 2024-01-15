@@ -1,10 +1,14 @@
 import {useQuery} from "@tanstack/react-query";
 import useSubdomainRegistrar from "./useSubdomainRegistrar";
 
+export interface ServiceFees {
+  registrationFee: number;
+  renewalFee: number;
+}
 
 function useDomainFees() {
   const registrar = useSubdomainRegistrar();
-  return useQuery({
+  return useQuery<ServiceFees>({
     queryKey: [registrar?.network, 'domain-fees'],
     queryFn: async () => {
       return {
