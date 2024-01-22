@@ -1,0 +1,15 @@
+.paper {
+  padding: 32px;
+}
+
+.progressContainer {
+  composes: paper;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.Error {
+
+}

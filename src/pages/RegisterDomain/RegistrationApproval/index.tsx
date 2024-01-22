@@ -1,10 +1,9 @@
-import {registrars, errors} from "@decentraweb/core";
+import {registrars} from "@decentraweb/core";
 import styles from "../styles.module.css";
 import {Button, Paper} from "@mui/material";
 import useReuqestApproval from "./useReuqestApproval";
 import {useEffect} from "react";
 import Loading from "../../../common/Loading";
-import RequestAllowance from "./RequestAllowance";
 
 interface Props {
   domain: registrars.StakedDomain;
@@ -14,10 +13,6 @@ interface Props {
   onApproved: (approval: registrars.ApprovedRegistration) => void;
   onReturn: () => void;
 }
-
-
-
-
 
 function RegistrationApproval({domain, subdomain, duration, isFeeInDWEB, onApproved, onReturn}: Props): JSX.Element {
   const {requestApproval, isPending, error, approval} = useReuqestApproval(domain.name, subdomain, duration, isFeeInDWEB);
@@ -36,21 +31,6 @@ function RegistrationApproval({domain, subdomain, duration, isFeeInDWEB, onAppro
       <Paper className={styles.paper}>
         <p>Requesting approval...</p>
         <Loading />
-      </Paper>
-    )
-  }
-
-  if(error instanceof errors.InsufficientAllowanceError) {
-    return (
-      <RequestAllowance error={error} onApproved={()=> requestApproval()} />
-    )
-  }
-
-  if(error instanceof errors.InsufficientBalanceError) {
-    return (
-      <Paper className={styles.paper}>
-        <p>{error.message}</p>
-        <Button onClick={()=> requestApproval()} disabled={isPending}>Retry</Button>
       </Paper>
     )
   }

@@ -1,14 +1,14 @@
-import {useParams} from "react-router-dom";
-import {Alert, Container, Typography} from "@mui/material";
+import { useParams } from 'react-router-dom';
+import { Alert, Container, Typography } from '@mui/material';
 
-import React, {useState} from "react";
-import {registrars} from "@decentraweb/core";
-import SubdomainForm from "./SubdomainForm";
-import RegistrationApproval from "./RegistrationApproval";
-import useDomainStakingState from "../../hooks/useDomainStakingState";
-import useDomainFees from "../../hooks/useDomainFees";
-import Loading from "../../common/Loading";
-
+import React, { useState } from 'react';
+import { registrars } from '@decentraweb/core';
+import SubdomainForm from './SubdomainForm';
+import RegistrationApproval from './RegistrationApproval';
+import useDomainStakingState from '../../hooks/useDomainStakingState';
+import useDomainFees from '../../hooks/useDomainFees';
+import Loading from '../../common/Loading';
+import FinishRegistration from './FinishRegistration';
 
 interface State {
   duration: number;
@@ -18,27 +18,24 @@ interface State {
   approval: registrars.ApprovedRegistration | null;
 }
 
-
 function RegisterDomain(): JSX.Element {
-  const {domain} = useParams();
+  const { domain } = useParams();
   if (!domain) {
-    throw new Error("No domain provided, this should never happen");
+    throw new Error('No domain provided, this should never happen');
   }
-  const {data: stakingState, isPending} = useDomainStakingState(domain);
-  const {data: serviceFees, isPending: isFeesPending} = useDomainFees();
+  const { data: stakingState, isPending } = useDomainStakingState(domain);
+  const { data: serviceFees, isPending: isFeesPending } = useDomainFees();
 
   const [state, setState] = useState<State>({
     duration: registrars.DURATION.ONE_YEAR,
     subdomain: '',
     isFeeInDWEB: false,
     isAvailable: false,
-    approval: null,
+    approval: null
   });
 
   if (isPending || !stakingState || isFeesPending || !serviceFees) {
-    return (
-      <Loading/>
-    )
+    return <Loading />;
   }
 
   if (!stakingState.staked) {
@@ -46,19 +43,27 @@ function RegisterDomain(): JSX.Element {
       <Container maxWidth="xs">
         <Alert severity="error">Domain is not staked</Alert>
       </Container>
-    )
+    );
   }
 
   let content;
-  if (state.subdomain) {
+  if (state.approval) {
+    content = (
+      <FinishRegistration
+        domain={stakingState}
+        subdomain={state.subdomain}
+        approval={state.approval}
+      />
+    );
+  } else if (state.subdomain) {
     content = (
       <RegistrationApproval
         domain={stakingState}
         subdomain={state.subdomain}
         duration={state.duration}
         isFeeInDWEB={state.isFeeInDWEB}
-        onApproved={(approval) => setState({...state, approval})}
-        onReturn={() => setState({...state, subdomain: ''})}
+        onApproved={(approval) => setState({ ...state, approval })}
+        onReturn={() => setState({ ...state, subdomain: '' })}
       />
     );
   } else {
@@ -66,11 +71,12 @@ function RegisterDomain(): JSX.Element {
       <SubdomainForm
         domain={stakingState}
         serviceFees={serviceFees}
-        onSubmit={(subdomain, duration, isFeeInDWEB) => setState({...state, subdomain, duration, isFeeInDWEB})}
+        onSubmit={(subdomain, duration, isFeeInDWEB) =>
+          setState({ ...state, subdomain, duration, isFeeInDWEB })
+        }
       />
-    )
+    );
   }
-
 
   return (
     <Container maxWidth="sm">
@@ -79,7 +85,7 @@ function RegisterDomain(): JSX.Element {
       </Typography>
       {content}
     </Container>
-  )
+  );
 }
 
 export default RegisterDomain;
