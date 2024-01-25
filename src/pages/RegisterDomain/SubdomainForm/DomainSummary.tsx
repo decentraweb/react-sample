@@ -27,7 +27,7 @@ function DomainSummary({name, data, registrationFee, renewalFee}: Props): JSX.El
       <Field label="Registration type">{data.stakingType}</Field>
       <Field label="Registration fee">
         ${data.price + registrationFee}
-        {registrationFee && (
+        {!!registrationFee && (
           <Tooltip title={`Includes $${registrationFee} service fee`}>
             <InfoIcon fontSize="small" color="info"/>
           </Tooltip>
@@ -37,7 +37,7 @@ function DomainSummary({name, data, registrationFee, renewalFee}: Props): JSX.El
       {data.renewalType === 'renewed' && (
         <Field label="Renewal fee">
           ${data.renewalFee + renewalFee}
-          {renewalFee && (
+          {!!renewalFee && (
             <Tooltip title={`Includes $${renewalFee} service fee`}>
               <InfoIcon fontSize="small" color="info"/>
             </Tooltip>
