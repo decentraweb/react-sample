@@ -68,6 +68,7 @@ function setupWeb3Modal({walletConnect, production}: Options) {
   createWeb3Modal({
     ethersConfig: defaultConfig({metadata}),
     chains: chains,
+    defaultChain: chains[0],
     projectId: walletConnect.id,
   });
 }
