@@ -99,11 +99,11 @@ function SubdomainForm({domain, serviceFees, onSubmit}: Props): JSX.Element {
       </p>
       {
         serviceFee.paidWith === ownerFee.paidWith ? (
-          <p>You will be chaged <CryptoAmount amount={serviceFee.amount + ownerFee.amount}
+          <p>You will be charged <CryptoAmount amount={serviceFee.amount + ownerFee.amount}
                                                currency={serviceFee.paidWith}/></p>
         ) : (
           <>
-            <p>You will be chaged:</p>
+            <p>You will be charged:</p>
             <ol>
               <li><CryptoAmount amount={serviceFee.amount} currency={serviceFee.paidWith}/> service fee</li>
               <li><CryptoAmount amount={ownerFee.amount} currency={ownerFee.paidWith}/> owner fee</li>
