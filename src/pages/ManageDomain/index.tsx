@@ -7,7 +7,7 @@ function ManageDomain() {
   }
   return (
     <div>
-      <h1>ManageDomain</h1>
+      <h1>Manage "{domain}"</h1>
     </div>
   );
 }

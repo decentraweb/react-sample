@@ -2,26 +2,20 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import setupWeb3Modal from "./utils/setupWeb3Modal";
-import {CssBaseline} from "@mui/material";
-import config from "./config";
+import setupWeb3Modal from './utils/setupWeb3Modal';
+import { CssBaseline } from '@mui/material';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
-setupWeb3Modal({
-  walletConnect: config.walletConnect,
-  production: false
-})
+setupWeb3Modal();
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
-    <CssBaseline/>
-    <App/>
+    <CssBaseline />
+    <App />
   </React.StrictMode>
 );
 

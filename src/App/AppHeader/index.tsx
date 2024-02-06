@@ -53,6 +53,7 @@ function ConnectedAccount({chainId}: { chainId: number }) {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
+        <MenuItem onClick={()=> window.location.href = '/my-domains'}>My Domains</MenuItem>
         <MenuItem onClick={handleSwitchNetwork}>Change Network</MenuItem>
         <MenuItem onClick={handleDisconnect}>Disconnect</MenuItem>
       </Menu>
