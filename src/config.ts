@@ -1,7 +1,11 @@
+import {EthereumNetwork, PolygonNetwork} from "@decentraweb/core";
+
 interface Config {
   production: boolean;
   infuraApiKey: string;
   stakedDomains: string[];
+  ethNetwork: EthereumNetwork;
+  polygonNetwork: PolygonNetwork;
   walletConnect: {
     id: string;
     title: string;
@@ -21,6 +25,8 @@ interface Config {
 const config: Config = {
   production: false,
   infuraApiKey: 'f270207d8b864a65b074f4b449570db0',
+  ethNetwork: 'mainnet',
+  polygonNetwork: 'matic',
   stakedDomains: [
     'demo',
     'crypto-wallet',
@@ -54,6 +60,8 @@ if( config.production ) {
     }
   ];
 } else {
+  config.ethNetwork = 'goerli';
+  config.polygonNetwork = 'maticmum';
   config.chains = [
     {
       chainId: 5,
