@@ -6,6 +6,9 @@ export interface ServiceFees {
   renewalFee: number;
 }
 
+/**
+ * Get the service fees for domain registration and renewal. Returned values are USD.
+ */
 function useDomainFees() {
   const registrar = useSubdomainRegistrar();
   return useQuery<ServiceFees>({

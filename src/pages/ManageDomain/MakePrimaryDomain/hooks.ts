@@ -4,6 +4,14 @@ import {getRegistry} from "../../../utils/domain";
 import useRegistry from "../../../hooks/useRegistry";
 import {useAppContext} from "../../../App/context";
 
+/**
+ * Check if given domain is primary for the connected wallet. This means:
+ * 1. Domain has ethereum address assigned to it
+ * 2. That address has reverse record pointing to this domain
+ * NOTE: This does not mean that the domain is primary for the connected wallet.
+ * It only checks if it is primary for any wallet.
+ * @param name
+ */
 export function useIsPrimaryDomain(name: DWEBName){
   return useQuery({
     queryKey: ['isPrimaryDomain', name.network, name.name],
@@ -23,6 +31,12 @@ export function useIsPrimaryDomain(name: DWEBName){
   });
 }
 
+/**
+ * Make given domain primary for the connected wallet. This means:
+ * 1. Set ethereum address for the domain to the connected wallet address
+ * 2. Set reverse record for the connected wallet to the given domain
+ * @param name
+ */
 export function useMakePrimaryDomain(name: DWEBName){
   const {signerAddress} = useAppContext();
   const queryClient = useQueryClient();

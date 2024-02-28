@@ -7,6 +7,12 @@ interface Result {
   error?: string;
 }
 
+/**
+ * Check if a domain is available fo registration.
+ * NOTE: For top level domains there are additional checks done by Decentraweb API.
+ * Getting approval for registration in that case guarantees that the domain is available.
+ * @param domain - domain name to check
+ */
 function useDomainAvailable(domain: string) {
   return useQuery<Result>({
     queryKey: ['domain-available', domain],

@@ -4,18 +4,25 @@ import {getDwebNameInstance} from '../../utils/domain';
 import { useEffect, useState } from 'react';
 
 type Result =
+  // Name is on the same network as connected wallet. `isOwner` is true if connected wallet is owner of the name.
   | { status: 'ready'; name: DWEBName; isOwner: boolean }
+  // Connected wallet owns domain, but name is on the different network. `correctNetwork` is the network on which name is.
   | { status: 'wrong_network'; name: DWEBName; correctNetwork: Network }
+  // Name is not found, most likely it does not exist
   | { status: 'not_found' }
   | { status: 'loading' }
   | { status: 'error' };
 
+/**
+ * Get domain instance. Instance may be read-only if connected wallet is
+ * not owner of the domain or domain is on another network.
+ * @param domain
+ */
 function useManageableDomain(domain: string) {
   const registryWithSigner = useRegistry();
   const [result, setResult] = useState<Result>({ status: 'loading' });
   useEffect(() => {
     setResult({ status: 'loading' });
-
     getDwebNameInstance(domain)
       .then(async (name) => {
         // Name is not found

@@ -4,6 +4,10 @@ import { useMemo } from 'react';
 
 const domainsPerPage = 20;
 
+/**
+ * Get paginated list of domains owned by the address.
+ * @param address
+ */
 function useOwnedDomains(address: string) {
   const registry = useRegistry();
   const { data, fetchNextPage, hasNextPage, isPending } = useInfiniteQuery({
