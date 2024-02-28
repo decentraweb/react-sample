@@ -1,0 +1,19 @@
+.container {
+    position: relative;
+}
+
+.alert {
+    margin-bottom: 1rem;
+}
+
+.field {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.coinId {
+    margin: 0 1rem;
+}
