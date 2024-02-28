@@ -2,7 +2,6 @@ import {EthereumNetwork, PolygonNetwork} from "@decentraweb/core";
 
 interface Config {
   production: boolean;
-  infuraApiKey: string;
   stakedDomains: string[];
   ethNetwork: EthereumNetwork;
   polygonNetwork: PolygonNetwork;
@@ -23,8 +22,7 @@ interface Config {
 }
 
 const config: Config = {
-  production: false,
-  infuraApiKey: 'f270207d8b864a65b074f4b449570db0',
+  production: false, // Set to true to use mainnet and matic, but be careful with real money!
   ethNetwork: 'mainnet',
   polygonNetwork: 'matic',
   stakedDomains: [

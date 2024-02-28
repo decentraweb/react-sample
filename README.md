@@ -23,5 +23,13 @@ This app is using [TanStack Query (React Query)](https://tanstack.com/query/late
 to perform asyncronous operations. You can replace it with any other library or just use `useEffect` and `useState` hooks.
 
 ### Connecting wallet
-To support connecting multiple wallets, we use 
-[Web3Modal SDK](https://docs.walletconnect.com/web3modal/react/about?platform=ethers5) by WalletConnect. 
+To support connecting multiple wallets, we use [Web3Modal SDK](https://docs.walletconnect.com/web3modal/react/about?platform=ethers5) by WalletConnect.
+
+**NOTE:** Wallet must have networks enabled:
+1. For production:
+    - Ethereum Mainnet
+    - Polygon Mainnet
+2. For development:
+    - Goerli Testnet
+    - Mumbai Testnet
+
